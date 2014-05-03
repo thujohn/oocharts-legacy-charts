@@ -1,13 +1,3 @@
-#Getting Started#
-
-OOcharts is an awesome little project that makes it easy to embed and share Google Analytics data through charts. It was started in the Summer of 2012 by [Tin Bin](http://tinb.in) and continues to grow. There are a few basics you need to know in order to get started:
-
-###API Keys###
-API Keys are created to give access to certain Google Analytics profiles. For every request to OOcharts, you will need a valid API Key. These keys can be created in [Mission Control](https://app.oocharts.com/mc/key/list).
-
-###Queries###
-Queries are packaged requests that are prebuilt on [Mission Control](https://app.oocharts.com/mc/query/list). Altough the API supports dynamic requests, Queries are useful for security. Queries restrict the parameters sent to Google Analytics and hide the Analytics profile ID. Users who want to display certain data on their site while also ensuring other parameters can not be retrieved should use Queries instead of the dynamic API.
-
 #OOcharts JS#
 
 OOcharts got its original footing providing an easy to use Charting library along with the API. Guess what, it's back!
@@ -27,6 +17,7 @@ The above code would draw a timeline which goes back 30 days (another feature is
 The OOcharts JS script is a single file. It can be downloaded from the GitHub repository (which also contains a number of examples). Simply place the `oocharts.js` file into your page:
 
 ```html
+	<script src="https://www.google.com/jsapi"></script>
 	<script src='oocharts.js'></script>
 ```
 
@@ -51,7 +42,7 @@ Dates can either be `Date` objects, Relative dates, or null (in which case the d
 
 It is important to note that only one of the two dates (start and end) can be relative. If the start date is relative, then it will include the dates **before** the end date (i.e. "30d" would make the start date 30 days from the end date). If the end date is relative, then it will include the dates **after** the start date.
 
-####Setting the API Key and Loading the Dependencies####
+####Setting the API Key, Service Endpoint, and Loading the Dependencies####
 OOcharts uses the [Google Visualization Library](https://developers.google.com/chart/interactive/docs/reference) to chart data. To get started, you will need to call the `load()` function after setting your API Key. This is all a bunch of gibberish, so here is a code example:
 
 ```html
@@ -60,8 +51,13 @@ OOcharts uses the [Google Visualization Library](https://developers.google.com/c
 <script src='oocharts.js'></script>
 <script type='text/javascript'>
 	window.onload = function(){
+	
+		// API key from OOchart server
 		oo.setAPIKey("{{ YOUR API KEY }}");
-
+		
+		// OOcharts server url. Append /api/dynamic.jsonp
+		oo.setServiceEndpoint('http://myserver.com:4004/api/dynamic.jsonp');
+		
 		oo.load(function(){
 
 			//Do charts here
@@ -78,7 +74,7 @@ Once the load callback has fired, you are ready to begin using OOcharts. The loa
 The OOcharts JS library comes with a few examples. These examples have all the basics you will need to get started. Just make sure to replace `{{YOUR PROFILE ID}}` with your Google Analytics Profile ID and `{{YOUR API KEY}}` with your OOcharts API Key.
 
 ####Issues####
-If you run in to any trouble with the OOcharts, you can email [support@oocharts.com](mailto:support@oocharts.com) or [create an issue](https://github.com/OOcharts/js/issues) on GitHub.
+If you run in to any trouble with the OOcharts, you can email [support@oocharts.com](mailto:support@oocharts.com) or [create an issue](https://github.com/OOcharts/oocharts-legacy-charts/issues) on GitHub.
 
 ##Metric##
 Metrics are the simplest charting object which replace the inner HTML content of an element with the result of a query.
@@ -532,9 +528,9 @@ Ah, so you want to drive stick huh? The OOcharts API is powerful all on its own,
 
 ##General##
 
-All OOcharts API endpoints have the general format: `/{{version}}/{{action}}.{{type}}`. The `version` dictates the API version (current `v1`), the action describes the action `query` or `dynamic`, and finally the `type` dictates a response of `json` or `jsonp`.
+All OOcharts API endpoints have the general format: `/{{version}}/{{action}}.{{type}}`. The `version` dictates the API version (current `v1`), the action describes the action which currently is `dynamic`, and finally the `type` dictates a response of `json` or `jsonp`.
 
-An example query call with a JSON response: `/v1/query.json`
+An example dynamic call with a JSON response: `/v1/dynamic.json`
 
 An example dynamic call with a JSONP response: `/v1/dynamic.jsonp`
 
@@ -569,21 +565,6 @@ Responses from either endpoint follow the format:
 
 ```
 
-## Query ##
-
-`GET /v1/query.json` or `GET /v1/query.jsonp`
-
-This endpoint is used to interact with the `Query` object in Mission Control.
-
-#### Query Strings ####
-
-- `key` - *(required)* Your API Key. This must have access to the Google Analytics profile used by the query.
-- `start` - *(required)* Start date of query. Should be in format `YYYY-MM-DD` or in relative date format described in *Basics*.
-- `end` - *(optional)* End date of query. Should be in format `YYYY-MM-DD` or in relative date format described in *Basics*. If no date is given, the current date of the Google Analytics profile's timezone (pretty snazzy huh?) will be used.
-- `query` - *(required)* The query slug of the Mission Control Query.
-- `page` - *(optional)* The page number of the results. Useful when using the Page Size setting of a Mission Control Query.
-- `filters` - *(optional)* A qualified Google Analytics filter string.
-- `callback` - *(optional)* Only necessary when using JSONP response type.
 
 ## Dynamic ##
 
@@ -640,9 +621,9 @@ var poll = (function(){
 
 #Contributing#
 
-There are multiple ways to contribute to OOcharts! You can give a small donation at [gittip](https://gittip.com/OOcharts) or you can contribute to the code base. OOcharts can be consumed by multiple charting libraries and other projects, so feel free to start making your own OOcharts visualization library to interact with the API! If you need help getting started, just look at the source of the [OOcharts JS repository](https://github.com/OOcharts/js).
+There are multiple ways to contribute to OOcharts! You can give a small donation at [gittip](https://gittip.com/OOcharts) or you can contribute to the code base. OOcharts can be consumed by multiple charting libraries and other projects, so feel free to start making your own OOcharts visualization library to interact with the API! If you need help getting started, just look at the source of the [OOcharts Legacy Charts repository](https://github.com/OOcharts/oocharts-legacy-charts).
 
 ###Contributers###
 
-- @vijayamaharaja - Added support for older versions of IE (see #11)
-- @jamiedewitz - Added column charts (see #21)
+- @vijayamaharaja - Added support for older versions of IE
+- @jamiedewitz - Added column charts
