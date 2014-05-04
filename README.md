@@ -2,6 +2,44 @@
 
 OOcharts got its original footing providing an easy to use Charting library along with the API. Guess what, it's back!
 
+
+### Quick Example ###
+```html
+<html>
+<head>
+</head>
+<body>
+<h3>With JS</h3>
+Visits : <span id='metric'></span>
+
+<h3>With HTML Attributes</h3>
+Visits : <span data-oochart='metric' data-oochart-metric='ga:visits' data-oochart-start-date='30d' data-oochart-profile='{{YOUR PROFILE ID}}'></span>
+
+<script src="https://www.google.com/jsapi"></script>
+<script src='../oocharts.js'></script>
+<script type="text/javascript">
+
+    window.onload = function(){
+
+        oo.setAPIKey("AAAAA1111111BBBBBBCCCCCCC");
+        oo.setServiceEndpoint('http://localhost:4004/api/dynamic.jsonp')
+
+        oo.load(function(){
+
+            var metric = new oo.Metric("{{YOUR PROFILE ID}}", "30d");
+
+            metric.setMetric("ga:visits");
+
+            metric.draw('metric');
+
+        });
+    };
+
+</script>
+</body>
+</html>
+```
+
 ####What's new in OOcharts JS####
 
 Other than the super fast and reliable API that sits behind it, the OOcharts JS script has had a number of improvements. One of the most notable is the ability to use HTML attributes to build charts:
